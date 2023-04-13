@@ -17,40 +17,119 @@ class BinarySearchTree {
         return this.head;
     }
 
-    add(/* data */) {
-        throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
+    add(data) {
+        this.head = addWithin(this.head, data);
+
+        function addWithin(node, value) {
+            if (!node) {
+                return new Node(value);
+            }
+
+            if (node.value === value) {
+                return node;
+            }
+
+            if (value < node.value) {
+                node.left = addWithin(node.left, value);
+            } else {
+                node.right = addWithin(node.right, value);
+            }
+
+            return node;
+        }
     }
 
     has(data) {
-        return !!this.find(data);
+        return Boolean(this.find(data));
     }
 
-    find(/* data */) {
-        throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
+    find(data) {
+        return findWithin(this.head, data);
+
+        function findWithin(node, value) {
+            if (!node) {
+                return null;
+            }
+
+            if (node.data === data) {
+                return node;
+            }
+
+            return (data < node.value) ? findWithin(node.left, data) : findWithin(node.right, value);
+        }
     }
 
-    remove(/* data */) {
-        throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
+    remove(data) {
+        this.head = removeNode(this.head, data);
+
+        function removeNode(node, value) {
+            if (node === null) {
+                return null;
+            } else if (value < node.value) {
+                node.left = removeNode(node.left, value);
+                return node;
+            } else if (value > node.value) {
+                node.right = removeNode(node.right, value);
+                return node;
+            } else {
+                if (!node.left && !node.right) {
+                    return null;
+                }
+
+                if (!node.left) {
+                    node = node.right;
+                    return node;
+                }
+
+                if (!node.right) {
+                    node = node.left;
+                    return node;
+                }
+
+                let maxFromLeft = this.max(node.left);
+                node.value = maxFromLeft.value;
+
+                node.left = removeNode(node.left, maxFromLeft.value);
+
+                return node;
+            }
+        }
     }
 
     min() {
-        if (this.head) {
-            let node = this.head;
-            while (node.left) {
-                node = this.head.left;
-            }
-        } else return null;
+        let node = this.head;
+        if (!this.head) {
+            return;
+        }
+
+        if (!node.right) {
+            return node.data;
+        }
+        while (node.right) {
+            node = node.right;
+        }
+
+        return node.data;
     }
 
+
     max() {
-        if (this.head) {
-            while (this.head.right) {
-                this.head = this.head.right;
-            }
-        } else return null;
+        let node = this.head;
+
+
+        if (!this.head) {
+            return;
+        }
+
+        if (!node.left) {
+            return node.data;
+        }
+
+        while (node.left) {
+            node = node.left;
+        }
+
+        return node.data;
     }
 }
 
