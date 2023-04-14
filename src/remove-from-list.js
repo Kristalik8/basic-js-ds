@@ -25,21 +25,21 @@ const {ListNode} = require('../extensions/list-node.js');
 
 
 function removeKFromList(l, k) {
-    let node = l;
+    let current = l;
     let number = k;
-    let prevNode = null;
+    let prev = null;
 
     while (l.value === number) {
         l = l.next;
     }
-    node = l;
-    prevNode = node;
-    while (node.next) {
-        node = node.next;
-        if (node.value === number) {
-            prevNode.next = node.next;
+    current = l;
+    prev = current;
+    while (current.next) {
+        current = current.next;
+        if (current.value === number) {
+            prev.next = current.next;
         } else {
-            prevNode = node;
+            prev = current;
         }
     }
     return l;
